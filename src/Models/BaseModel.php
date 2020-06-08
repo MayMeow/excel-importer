@@ -15,7 +15,7 @@ class BaseModel implements ModelInterface
     public function writeValue($column, $value)
     {
         if (array_key_exists($column, static::$rules)) {
-            $propertyName = static::$rules[$column];
+            $propertyName = static::$rules[strtoupper($column)];
 
             if (property_exists($this, $propertyName)) {
                 $this->$propertyName = $value;
