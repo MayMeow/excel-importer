@@ -2,6 +2,8 @@
 
 namespace MayMeow\ExcelImporter\Commands;
 
+use MayMeow\ExcelImporter\Models\ExampleModel;
+use MayMeow\ExcelImporter\Writers\ModelWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +22,9 @@ class ReadCommand extends Command
         ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to XLSX file.', null);
     }
 
+    /**
+     * Function Execute
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fileName = $input->getOption('file');
@@ -31,14 +36,29 @@ class ReadCommand extends Command
         $totalRows = $spreadsheet->getActiveSheet()->getHighestDataRow();
 
         $output->writeln("Total rows: $totalRows");
+        $modelArray = [];
+
+        $writer = new ModelWriter();
 
         // read all data
         foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row)
         {
+            $mod = new ExampleModel();
+
             foreach ($row->getCellIterator() as $cell)
             {
-                $output->writeln($cell->getColumn() . ' - ' . $cell->getValue());
+                //$output->writeln($cell->getColumn() . ' - ' . $cell->getValue());
+
+                $writer->write($mod, $cell->getColumn(), $cell->getValue());
             }
+
+            $modelArray[] = $mod;
+        }
+
+        /** @var ModelInterfae $model */
+        foreach ($modelArray as $model)
+        {
+            $output->writeln($model->getName());
         }
 
         return Command::SUCCESS;
