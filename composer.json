@@ -1,11 +1,17 @@
 {
-    "name": "emma/excel-to-db",
+    "name": "maymeow/excel-importer",
+    "type": "php-pacakge",
+    "description": "A php package to import XLSX filse to models.",
+    "keywords": ["php", "package", "utils", "excel", "xlsx-to-model", "datasources"],
+    "homepage": "https://github.com/MayMeow/excel-importer",
     "authors": [
         {
             "name": "Emma",
-            "email": "emma@themaymeow.com"
+            "email": "emma@themaymeow.com",
+            "homepage": "https://themaymeow.com"
         }
     ],
+    "license": "MIT",
     "require": {
         "phpoffice/phpspreadsheet": "^1.13",
         "symfony/console": "^5.1"
@@ -14,5 +20,9 @@
         "psr-4": {
             "MayMeow\\ExcelImporter\\": "src/"
         }
+    },
+    "support": {
+        "source": "https://github.com/MayMeow/excel-importer",
+        "issues": "https://github.com/MayMeow/excel-importer/issues"
     }
 }
