@@ -18,8 +18,7 @@ class ReadCommand extends Command
     {
         $this
             ->setDescription("Read data from XLSX file")
-
-        ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to XLSX file.', null);
+            ->addOption('file', 'f', InputOption::VALUE_REQUIRED, 'Path to XLSX file.', null);
     }
 
     /**
@@ -47,8 +46,6 @@ class ReadCommand extends Command
 
             foreach ($row->getCellIterator() as $cell)
             {
-                //$output->writeln($cell->getColumn() . ' - ' . $cell->getValue());
-
                 $writer->write($mod, $cell->getColumn(), $cell->getValue());
             }
 
@@ -58,9 +55,10 @@ class ReadCommand extends Command
         /** @var ModelInterfae $model */
         foreach ($modelArray as $model)
         {
+            // Write model name
             $output->writeln($model->getName());
         }
-
+        
         return Command::SUCCESS;
     }
 }
