@@ -1,0 +1,18 @@
+{
+    "name": "emma/excel-to-db",
+    "authors": [
+        {
+            "name": "Emma",
+            "email": "emma@themaymeow.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.13",
+        "symfony/console": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MayMeow\\ExcelImporter\\": "src/"
+        }
+    }
+}
