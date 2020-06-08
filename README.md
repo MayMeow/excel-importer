@@ -1,6 +1,6 @@
 # Excel importer
 
-Library to parse XLSX files to models. 
+Library to transform XLSX files into models. 
 
 This Library using `phpoffice/phpspreadsheet` to read from XLSX files. Look at their [Github](https://github.com/PHPOffice/PhpSpreadsheet)
 
