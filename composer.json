@@ -4,13 +4,11 @@
     "description": "A php package to import XLSX filse to models.",
     "keywords": ["php", "package", "utils", "excel", "xlsx-to-model", "datasources"],
     "homepage": "https://github.com/MayMeow/excel-importer",
-    "authors": [
-        {
-            "name": "Emma",
-            "email": "emma@themaymeow.com",
-            "homepage": "https://themaymeow.com"
-        }
-    ],
+    "authors": [{
+        "name": "Emma",
+        "email": "emma@themaymeow.com",
+        "homepage": "https://themaymeow.com"
+    }],
     "license": "MIT",
     "require": {
         "phpoffice/phpspreadsheet": "^1.13",
