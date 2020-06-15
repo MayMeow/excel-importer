@@ -1,7 +1,7 @@
 {
     "name": "maymeow/excel-importer",
     "type": "php-pacakge",
-    "description": "A php package to import XLSX filse to models.",
+    "description": "A php package to transform XLSX filse to models.",
     "keywords": ["php", "package", "utils", "excel", "xlsx-to-model", "datasources"],
     "homepage": "https://github.com/MayMeow/excel-importer",
     "authors": [{
