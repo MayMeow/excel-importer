@@ -6,6 +6,7 @@ use MayMeow\ExcelImporter\Models\ExampleModel;
 use MayMeow\ExcelImporter\Writers\ModelWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,12 +53,32 @@ class ReadCommand extends Command
             $modelArray[] = $mod;
         }
 
-        /** @var ModelInterfae $model */
-        foreach ($modelArray as $model)
-        {
-            // Write model name
-            $output->writeln($model->getName());
+        $table = new Table($output);
+
+        for($i = 0; $i <= count($modelArray) - 1; $i++) {
+
+            if ($i == 0) {
+                $table->setHeaders([
+                    'Row',
+                    $modelArray[$i]->getCount(),
+                    $modelArray[$i]->getQuantityUnit(),
+                    $modelArray[$i]->getDocummentNumber(),
+                    $modelArray[$i]->getName(),
+                    $modelArray[$i]->getPrice()
+                    ]);
+            } else {
+                $table->addRow([
+                    $i,
+                    $modelArray[$i]->getCount(),
+                    $modelArray[$i]->getQuantityUnit(),
+                    $modelArray[$i]->getDocummentNumber(),
+                    $modelArray[$i]->getName(),
+                    $modelArray[$i]->getPrice()
+                    ]);
+            }
         }
+        
+        $table->render();
         
         return Command::SUCCESS;
     }
