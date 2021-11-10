@@ -3,21 +3,20 @@
 namespace MayMeow\ExcelImporter\Test;
 
 use MayMeow\ExcelImporter\Test\Models\TestingModel;
+use MayMeow\ExcelImporter\Test\Tools\TestingDataLocator;
 use MayMeow\ExcelImporter\Writers\ModelWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PHPUnit\Framework\TestCase;
 
 class FileImportTest extends TestCase
 {
-    private static $testingFile = ROOT . DIRECTORY_SEPARATOR . 'testing-data.xlsx';
-
     /** @test */
     public function testImportingFile()
     {
         $xlsxReader = new Xlsx();
         $xlsxReader->getReadDataOnly();
 
-        $spreadsheet = $xlsxReader->load(static::$testingFile);
+        $spreadsheet = $xlsxReader->load((new TestingDataLocator())->locateExcelFile());
 
         /** @var array<TestingModel> $modelArray */
         $modelArray = [];
