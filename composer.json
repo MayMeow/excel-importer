@@ -5,8 +5,8 @@
     "keywords": ["php", "package", "utils", "excel", "xlsx-to-model", "datasources"],
     "homepage": "https://github.com/MayMeow/excel-importer",
     "authors": [{
-        "name": "Emma",
-        "email": "emma@themaymeow.com",
+        "name": "May Meow",
+        "email": "hello@mitsuha.dev",
         "homepage": "https://themaymeow.com"
     }],
     "license": "MIT",
@@ -19,8 +19,19 @@
             "MayMeow\\ExcelImporter\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "MayMeow\\ExcelImporter\\Test\\": "tests/"
+        }
+    },
     "support": {
         "source": "https://github.com/MayMeow/excel-importer",
         "issues": "https://github.com/MayMeow/excel-importer/issues"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "test": "phpunit tests"
     }
 }
