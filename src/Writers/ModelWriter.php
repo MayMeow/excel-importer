@@ -2,12 +2,41 @@
 
 namespace MayMeow\ExcelImporter\Writers;
 
+use MayMeow\ExcelImporter\Exceptions\MissingInterfaceException;
 use MayMeow\ExcelImporter\Models\ModelInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ModelWriter
 {
-    public function write(ModelInterface $model, $columnName, $value)
+    /** @var array<ModelInterface> $models */
+    protected array $models = [];
+
+    /**
+     * @param string $model
+     * @param Spreadsheet $spreadsheet
+     * @return array<ModelInterface>
+     * @throws \ReflectionException|MissingInterfaceException
+     */
+    public function write(string $model, Spreadsheet $spreadsheet): array
     {
-        $model->writeValue($columnName, $value);
+        $reflector = new \ReflectionClass($model);
+        $instacedModel = $reflector->newInstance();
+
+        if (!$instacedModel instanceof ModelInterface) {
+            throw new MissingInterfaceException('Model must implement ' . ModelInterface::class);
+        }
+
+        foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row) {
+            /** @var ModelInterface $emptyModel */
+            $emptyModel = new $model();
+
+            foreach ($row->getCellIterator() as $cell) {
+                $emptyModel->writeValue($cell->getColumn(), $cell->getValue());
+            }
+
+            array_push($this->models, $emptyModel);
+        }
+
+        return $this->models;
     }
 }

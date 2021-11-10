@@ -2,6 +2,12 @@
 
 namespace MayMeow\ExcelImporter\Models;
 
+use MayMeow\ExcelImporter\Test\Models\TestingModel;
+
+/**
+ * @deprecated will be removed in 1.2.0 release
+ * @see TestingModel
+ */
 class ExampleModel extends BaseModel
 {
     protected static $rules = [
