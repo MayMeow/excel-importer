@@ -1,2 +1,4 @@
 vendor/*
 data/*
+.idea/*
+.phpunit.result.cache

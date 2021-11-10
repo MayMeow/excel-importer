@@ -1,0 +1,17 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Composer run action PHPUnit
+        uses: MayMeowHQ/composer-run-action@v4
+        with:
+          composer_script: 'test'
