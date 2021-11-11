@@ -4,7 +4,9 @@ namespace MayMeow\ExcelImporter\Writers;
 
 use MayMeow\ExcelImporter\Exceptions\MissingInterfaceException;
 use MayMeow\ExcelImporter\Models\ModelInterface;
+use MayMeow\ExcelImporter\Models\WriterRulesInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\Console\Exception\MissingInputException;
 
 class ModelWriter
 {
@@ -26,12 +28,18 @@ class ModelWriter
             throw new MissingInterfaceException('Model must implement ' . ModelInterface::class);
         }
 
+        if (!$instacedModel instanceof WriterRulesInterface) {
+            throw new MissingInputException('Model must implement ' . WriterRulesInterface::class);
+        }
+
+        $rules = $instacedModel->getRules();
+
         foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row) {
             /** @var ModelInterface $emptyModel */
             $emptyModel = new $model();
 
             foreach ($row->getCellIterator() as $cell) {
-                $emptyModel->writeValue($cell->getColumn(), $cell->getValue());
+                $emptyModel->writeValue($cell->getColumn(), $cell->getValue(), $rules);
             }
 
             array_push($this->models, $emptyModel);
