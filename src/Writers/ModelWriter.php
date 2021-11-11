@@ -5,6 +5,7 @@ namespace MayMeow\ExcelImporter\Writers;
 use MayMeow\ExcelImporter\Exceptions\MissingInterfaceException;
 use MayMeow\ExcelImporter\Models\ModelInterface;
 use MayMeow\ExcelImporter\Models\WriterRulesInterface;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\Console\Exception\MissingInputException;
 
@@ -14,7 +15,7 @@ class ModelWriter
     protected array $models = [];
 
     /**
-     * @param string $model
+     * @param class-string $model
      * @param Spreadsheet $spreadsheet
      * @return array<ModelInterface>
      * @throws \ReflectionException|MissingInterfaceException
@@ -38,6 +39,7 @@ class ModelWriter
             /** @var ModelInterface $emptyModel */
             $emptyModel = new $model();
 
+            /** @var Cell $cell */
             foreach ($row->getCellIterator() as $cell) {
                 $emptyModel->writeValue($cell->getColumn(), $cell->getValue(), $rules);
             }

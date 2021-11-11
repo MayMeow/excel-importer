@@ -4,3 +4,6 @@ parameters:
     treatPhpDocTypesAsCertain: false
     paths:
         - src
+    excludes_analyse:
+        - src/Models/ExampleModel.php
+        - src/Commands/ReadCommand.php

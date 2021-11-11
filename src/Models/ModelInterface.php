@@ -8,7 +8,7 @@ interface ModelInterface
      * @param string $column
      * @param string $value
      * @param array<string> $rules
-     * @return mixed
+     * @return void
      */
     public function writeValue(string $column, string $value, array $rules): void;
 }
