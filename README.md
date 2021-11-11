@@ -49,27 +49,14 @@ use MayMeow\ExcelImporter\Writers\ModelWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 // ...
-$fileName = '/full/path/to/your/file'
-
-$reader = new Xlsx();
-$writer = new ModelWriter();
-$modelArray = []; // here we add all row models
-
-$reader->getReadDataOnly();
-$spreadsheet = $reader->load($fileName);
-
-// read all data
-foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row)
+public function testImportingFile()
 {
-    $mod = new ExampleModel();
-
-    foreach ($row->getCellIterator() as $cell)
-    {
-        $writer->write($mod, $cell->getColumn(), $cell->getValue());
-    }
-
-    $modelArray[] = $mod;
+    $xlsxReader = new Xlsx();
+    $spreadsheet = $xlsxReader->load((new TestingDataLocator())->locateExcelFile());
+    $writer = new ModelWriter();
+    
+    /** @var array<TestingModel> $modelArray */
+    $modelArray = $writer->write(TestingModel::class, $spreadsheet);
 }
-
 // ...
 ```

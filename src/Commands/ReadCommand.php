@@ -11,6 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @deprecated Will be removed in 1.2.0 release
+ */
 class ReadCommand extends Command
 {
     protected static $defaultName = "app:read-file";
