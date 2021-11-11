@@ -12,7 +12,8 @@
     "license": "MIT",
     "require": {
         "phpoffice/phpspreadsheet": "^1.13",
-        "symfony/console": "^5.1"
+        "symfony/console": "^5.1",
+        "php": "8.*"
     },
     "autoload": {
         "psr-4": {
