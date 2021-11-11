@@ -4,25 +4,15 @@ namespace MayMeow\ExcelImporter\Models;
 
 use MayMeow\ExcelImporter\Attributes\Column;
 
-class BaseModel implements ModelInterface
+class BaseModel implements ModelInterface, WriterRulesInterface
 {
-    /**
-     * Rules
-     */
-    protected array $rules = [];
-
-    public function __construct()
-    {
-        $this->buildRules();
-    }
-
     /**
      * Write value to model
      */
-    public function writeValue($column, $value)
+    public function writeValue(string $column, string $value, array $rules): void
     {
-        if (array_key_exists($column, $this->rules)) {
-            $propertyName = $this->rules[strtoupper($column)];
+        if (array_key_exists($column, $rules)) {
+            $propertyName = $rules[strtoupper($column)];
 
             if (property_exists($this, $propertyName)) {
                 $this->$propertyName = $value;
@@ -30,8 +20,13 @@ class BaseModel implements ModelInterface
         }
     }
 
-    protected function buildRules(): void
+    /**
+     * @return array<string> Writer Rules
+     */
+    protected function buildRules(): array
     {
+        $rules = [];
+
         $reflector = new \ReflectionClass($this);
 
         /** @var array<\ReflectionProperty> $properties */
@@ -45,8 +40,15 @@ class BaseModel implements ModelInterface
                 /** @var Column $instatiated */
                 $instatiated = $attributes[0]->newInstance();
 
-                $this->rules[$instatiated->getColumnIdentifier()] = $property->getName();
+                $rules[$instatiated->getColumnIdentifier()] = $property->getName();
             }
         }
+
+        return $rules;
+    }
+
+    public function getRules(): array
+    {
+        return $this->buildRules();
     }
 }
