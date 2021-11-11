@@ -33,8 +33,8 @@ class BaseModel implements ModelInterface, WriterRulesInterface
         $properties = $reflector->getProperties();
 
         foreach ($properties as $property) {
-            /** @var array<\ReflectionAttribute> $attributes */
-            $attributes = $property->getAttributes();
+            /** @var array<\ReflectionAttribute<Column>> $attributes */
+            $attributes = $property->getAttributes(Column::class);
 
             if (!empty($attributes)) {
                 /** @var Column $instatiated */

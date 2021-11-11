@@ -2,6 +2,10 @@
 
 namespace MayMeow\ExcelImporter\Attributes;
 
+/**
+ * Attribute Column
+ * Specifying column in Excel from which you want to map data to model.
+ */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Column
 {
@@ -11,7 +15,7 @@ class Column
     }
 
     /**
-     * @return string
+     * @return string Column identifier
      */
     public function getColumnIdentifier(): string
     {

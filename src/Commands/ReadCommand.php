@@ -44,12 +44,10 @@ class ReadCommand extends Command
         $writer = new ModelWriter();
 
         // read all data
-        foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row)
-        {
+        foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row) {
             $mod = new ExampleModel();
 
-            foreach ($row->getCellIterator() as $cell)
-            {
+            foreach ($row->getCellIterator() as $cell) {
                 $writer->write($mod, $cell->getColumn(), $cell->getValue());
             }
 
@@ -58,8 +56,7 @@ class ReadCommand extends Command
 
         $table = new Table($output);
 
-        for($i = 0; $i <= count($modelArray) - 1; $i++) {
-
+        for ($i = 0; $i <= count($modelArray) - 1; $i++) {
             if ($i == 0) {
                 $table->setHeaders([
                     'Row',
