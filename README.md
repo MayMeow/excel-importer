@@ -1,10 +1,10 @@
 # Excel importer
 
-Library to transform XLSX files into models. 
+Simple and extendable library for loading data from Excel files (.xlsx) into objects.
 
 This Library using `phpoffice/phpspreadsheet` to read from XLSX files. Look at their [Github](https://github.com/PHPOffice/PhpSpreadsheet)
 
-## Read files - commandline with example data
+## Read files - commandline with example data (Deprecated)
 
 From command line with example data
 
@@ -14,7 +14,8 @@ php application.php app:read-file -f ./path/to/file.xlsx
 
 ## Via Source Code
 
-Create new model which extending `MayMeow\ExcelImporter\Models\BaseModel`.
+Create new model which extending `MayMeow\ExcelImporter\Models\BaseModel`. To map column from excel to property use
+`\MayMeow\ExcelImporter\Attributes\Column` attribute.
 
 ```php
 <?php
@@ -23,16 +24,10 @@ use MayMeow\ExcelImporter\Models\BaseModel;
 
 class ExampleModel extends BaseModel
 {
-    /**
-     *  Bindings between columns and model properties
-     */
-    protected static $rules = [
-        'A' => 'property',
-    ];
+    #[\MayMeow\ExcelImporter\Attributes\Column('A')]
+    protected string $property;
 
-    protected $property;
-
-    public function getPropery()
+    public function getProperty()
     {
         return $this->property;
     }
@@ -60,3 +55,10 @@ public function testImportingFile()
 }
 // ...
 ```
+
+## Files
+
+For getting path to files you can create Locator by implementing `MayMeow\ExcelImporter\Tools\FileLocatorInterface` which
+is not required by XLS reader but recommended.
+
+__License MIT__
