@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "379991f939529914bfc6a6c61952751e",
+    "content-hash": "2e8f6b42d27eb3f9f3adb045f3ce85b1",
     "packages": [
         {
             "name": "ezyang/htmlpurifier",
@@ -237,6 +237,51 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.0"
             },
             "time": "2021-07-01T19:01:15+00:00"
+        },
+        {
+            "name": "meow/hydrator",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/meowphp/hydrator.git",
+                "reference": "78a650130209dcfbb47a3ad88eaecc11fe6ce626"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/meowphp/hydrator/zipball/78a650130209dcfbb47a3ad88eaecc11fe6ce626",
+                "reference": "78a650130209dcfbb47a3ad88eaecc11fe6ce626",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.1",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Meow\\Hydrator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "May Meow",
+                    "email": "hello@mitsuha.dev",
+                    "homepage": "https://themaymeow.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/meowphp/hydrator/issues",
+                "source": "https://github.com/meowphp/hydrator/tree/v1.0.1"
+            },
+            "time": "2021-11-14T13:23:52+00:00"
         },
         {
             "name": "myclabs/php-enum",

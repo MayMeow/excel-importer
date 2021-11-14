@@ -8,6 +8,8 @@ class BaseModel implements ModelInterface, WriterRulesInterface
 {
     /**
      * Write value to model
+     * @deprecated Use hydrator to write value instead of this
+     * @see \Meow\Hydrator\Hydrator
      */
     public function writeValue(string $column, string $value, array $rules): void
     {
