@@ -39,7 +39,9 @@ class ModelWriter
 
             /** @var Cell $cell */
             foreach ($row->getCellIterator() as $cell) {
-                $modelData[$rules[$cell->getColumn()]] = $cell->getValue();
+                if (array_key_exists($cell->getColumn(), $rules)) {
+                    $modelData[$rules[$cell->getColumn()]] = $cell->getValue();
+                }
             }
 
             $emptyModel = $hydrator->hydrate($model, $modelData);
