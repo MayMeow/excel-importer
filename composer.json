@@ -11,7 +11,7 @@
     }],
     "license": "MIT",
     "require": {
-        "phpoffice/phpspreadsheet": "^1.13",
+        "phpoffice/phpspreadsheet": "^2.2",
         "symfony/console": "^5.1",
         "php": "8.*",
         "meow/hydrator": "^1.0"
