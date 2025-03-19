@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Composer run action PHPUnit
-        uses: MayMeowHQ/composer-run-action@v4
+        uses: MayMeowHQ/composer-run-action@v8.4
         with:
           composer_script: 'test'
 
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Composer run action PHPC_CS
-        uses: MayMeowHQ/composer-run-action@v4
+        uses: MayMeowHQ/composer-run-action@v8.4
         with:
           composer_script: 'cs-check'
 
@@ -30,6 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Composer run action PHPStan
-        uses: MayMeowHQ/composer-run-action@v4
+        uses: MayMeowHQ/composer-run-action@v8.4
         with:
           composer_script: 'stan'
