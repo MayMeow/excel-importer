@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace MayMeow\ExcelImporter\Test\Models;
 
 use MayMeow\ExcelImporter\Attributes\Column;
+use MayMeow\ExcelImporter\Attributes\Required;
 use MayMeow\ExcelImporter\Models\BaseModel;
 
 class TestingModel extends BaseModel
 {
     #[Column('A')]
+    #[Required]
     protected string $colA;
 
     #[Column('B')]
