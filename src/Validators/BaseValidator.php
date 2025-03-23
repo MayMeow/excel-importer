@@ -7,7 +7,20 @@ use ReflectionClass;
 
 class BaseValidator
 {
-    public function validate(ModelInterface $model, string $against): void
+    /**
+     * Validate array of models
+     * @param array<ModelInterface> $model
+     * @param string $rule
+     * @return void
+     */
+    public function validateMany(array $model, string $rule): void
+    {
+        foreach ($model as $m) {
+            $this->validate($m, $rule);
+        }
+    }
+
+    public function validate(ModelInterface $model, string $rule): void
     {
         $reflection = new ReflectionClass($model);
         $properties = $reflection->getProperties();
@@ -16,7 +29,7 @@ class BaseValidator
             $attributes = $property->getAttributes();
 
             foreach ($attributes as $attribute) {
-                if ($attribute->getName() == $against) { // if there is attribute agains which we want to validate
+                if ($attribute->getName() == $rule) { // if there is attribute agains which we want to validate
                     $property->setAccessible(true);
                     $value = $property->getValue($model);
 

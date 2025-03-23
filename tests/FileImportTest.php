@@ -3,7 +3,7 @@
 namespace MayMeow\ExcelImporter\Test;
 
 use Exception;
-use MayMeow\ExcelImporter\Attributes\Required;
+use MayMeow\ExcelImporter\Attributes\NotEmpty;
 use MayMeow\ExcelImporter\Test\Models\TestingModel;
 use MayMeow\ExcelImporter\Test\Tools\TestingDataLocator;
 use MayMeow\ExcelImporter\Validators\BaseValidator;
@@ -46,7 +46,7 @@ class FileImportTest extends TestCase
 
         $baseValidator = new BaseValidator();
 
-        $baseValidator->validate($modelArray[2], against: Required::class);
+        $baseValidator->validateMany($modelArray, rule: NotEmpty::class);
     }
 
     /** @test */
@@ -63,6 +63,6 @@ class FileImportTest extends TestCase
 
         $baseValidator = new BaseValidator();
 
-        $baseValidator->validate($modelArray[1], against: Required::class);
+        $baseValidator->validate($modelArray[1], rule: NotEmpty::class);
     }
 }
