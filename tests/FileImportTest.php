@@ -2,8 +2,11 @@
 
 namespace MayMeow\ExcelImporter\Test;
 
+use Exception;
+use MayMeow\ExcelImporter\Attributes\NotEmpty;
 use MayMeow\ExcelImporter\Test\Models\TestingModel;
 use MayMeow\ExcelImporter\Test\Tools\TestingDataLocator;
+use MayMeow\ExcelImporter\Validators\BaseValidator;
 use MayMeow\ExcelImporter\Writers\ModelWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -26,5 +29,40 @@ class FileImportTest extends TestCase
         $this->assertEquals('g', $modelArray[0]->getColG());
 
         $this->assertEquals(6, $modelArray[1]->getColF());
+    }
+
+    /** @test */
+    public function testImportingModelOnLineTwoShouldFail()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Property colA is required');
+
+        $xlsxReader = new Xlsx();
+        $spreadsheet = $xlsxReader->load((new TestingDataLocator())->locateExcelFile());
+        $writer = new ModelWriter();
+
+        /** @var array<TestingModel> $modelArray */
+        $modelArray = $writer->write(TestingModel::class, $spreadsheet);
+
+        $baseValidator = new BaseValidator();
+
+        $baseValidator->validateMany($modelArray, rule: NotEmpty::class);
+    }
+
+    /** @test */
+    public function testImportingModelOnLineOneShouldPass()
+    {
+        $this->expectNotToPerformAssertions();
+
+        $xlsxReader = new Xlsx();
+        $spreadsheet = $xlsxReader->load((new TestingDataLocator())->locateExcelFile());
+        $writer = new ModelWriter();
+
+        /** @var array<TestingModel> $modelArray */
+        $modelArray = $writer->write(TestingModel::class, $spreadsheet);
+
+        $baseValidator = new BaseValidator();
+
+        $baseValidator->validate($modelArray[1], rule: NotEmpty::class);
     }
 }

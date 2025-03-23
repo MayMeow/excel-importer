@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace MayMeow\ExcelImporter\Test\Models;
 
 use MayMeow\ExcelImporter\Attributes\Column;
+use MayMeow\ExcelImporter\Attributes\NotEmpty;
 use MayMeow\ExcelImporter\Models\BaseModel;
 
 class TestingModel extends BaseModel
 {
     #[Column('A')]
+    #[NotEmpty(message: 'Property colA is required')] // TODO implement this - custom message
     protected string $colA;
 
     #[Column('B')]
