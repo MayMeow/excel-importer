@@ -4,6 +4,7 @@ namespace MayMeow\ExcelImporter\Test;
 
 use Exception;
 use MayMeow\ExcelImporter\Attributes\NotEmpty;
+use MayMeow\ExcelImporter\Exceptions\ValidationException;
 use MayMeow\ExcelImporter\Test\Models\TestingModel;
 use MayMeow\ExcelImporter\Test\Tools\TestingDataLocator;
 use MayMeow\ExcelImporter\Validators\BaseValidator;
@@ -34,8 +35,8 @@ class FileImportTest extends TestCase
     /** @test */
     public function testImportingModelOnLineTwoShouldFail()
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Property colA is required');
+        #$this->expectException(ValidationException::class);
+        #$this->expectExceptionMessage('Validation failed');
 
         $xlsxReader = new Xlsx();
         $spreadsheet = $xlsxReader->load((new TestingDataLocator())->locateExcelFile());
@@ -44,9 +45,15 @@ class FileImportTest extends TestCase
         /** @var array<TestingModel> $modelArray */
         $modelArray = $writer->write(TestingModel::class, $spreadsheet);
 
-        $baseValidator = new BaseValidator();
+        $baseValidator = new BaseValidator(failFast: true, throwException: true);
 
-        $baseValidator->validateMany($modelArray, rule: NotEmpty::class);
+        #$baseValidator->validateMany($modelArray, rule: NotEmpty::class);
+
+        try {
+            $baseValidator->validateMany($modelArray, rule: NotEmpty::class);
+        } catch (ValidationException $e) {
+            $this->assertEquals('Property colA is required', $e->getErrors()->getFirstError());
+        }
     }
 
     /** @test */
@@ -61,7 +68,7 @@ class FileImportTest extends TestCase
         /** @var array<TestingModel> $modelArray */
         $modelArray = $writer->write(TestingModel::class, $spreadsheet);
 
-        $baseValidator = new BaseValidator();
+        $baseValidator = new BaseValidator(failFast: true, throwException: true);
 
         $baseValidator->validate($modelArray[1], rule: NotEmpty::class);
     }

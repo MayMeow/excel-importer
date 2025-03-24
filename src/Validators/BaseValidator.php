@@ -2,28 +2,49 @@
 
 namespace MayMeow\ExcelImporter\Validators;
 
+use MayMeow\ExcelImporter\Errors\ValidatorErrorBag;
 use MayMeow\ExcelImporter\Models\ModelInterface;
+use PHPUnit\Util\Xml\Validator;
 use ReflectionClass;
 
 class BaseValidator
 {
+    protected ?ValidatorErrorBag $errors = null;
+
+    public function __construct(protected bool $failFast = false, protected bool $throwException = false)
+    {
+        //
+    }
+
     /**
      * Validate array of models
      * @param array<ModelInterface> $model
      * @param string $rule
      * @return void
      */
-    public function validateMany(array $model, string $rule): void
+    public function validateMany(array $model, string $rule): ValidatorErrorBag
     {
-        foreach ($model as $m) {
+        foreach ($model as $index => $m) {
             $this->validate($m, $rule);
         }
+
+        return $this->errors;
     }
 
-    public function validate(ModelInterface $model, string $rule): void
+    protected function initialize(): ValidatorErrorBag
+    {
+        if ($this->errors == null) {
+            $this->errors = new ValidatorErrorBag();
+        }
+
+        return $this->errors;
+    }
+
+    public function validate(ModelInterface $model, string $rule): ValidatorErrorBag
     {
         $reflection = new ReflectionClass($model);
         $properties = $reflection->getProperties();
+        $errors = $this->initialize();
 
         foreach ($properties as $property) {
             $attributes = $property->getAttributes();
@@ -37,10 +58,25 @@ class BaseValidator
                     $a = $attribute->newInstance();
 
                     if (!$a->validate($value)) {
-                        throw new \Exception('Property ' . $property->getName() . ' is required');
+                        $errors->addError($property->getName(), 'Property ' . $property->getName() . ' is required');
+
+                        if ($this->failFast) {
+                            if ($this->throwException) {
+                                $errors->throwIfNotEmpty();
+                            }
+
+                            return $errors;
+                        }
                     }
+
                 }
             }
         }
+
+        if ($this->throwException) {
+            $errors->throwIfNotEmpty();
+        }
+
+        return $errors;
     }
 }
