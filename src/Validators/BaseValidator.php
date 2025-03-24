@@ -24,8 +24,20 @@ class BaseValidator
      */
     public function validateMany(array $model, string $rule): ValidatorErrorBag
     {
+        $errors = $this->initialize();
+
         foreach ($model as $index => $m) {
-            $this->validate($m, $rule);
+            if (!is_object($m)) {
+                $errors->addError('general', "Invalid model at index $index");
+                continue;
+            }
+
+            $this->validate($m, $rule, $index);
+        }
+
+        // htrow exception if there are any errors
+        if ($this->throwException) {
+            $errors->throwIfNotEmpty();
         }
 
         return $this->errors;
@@ -40,7 +52,7 @@ class BaseValidator
         return $this->errors;
     }
 
-    public function validate(ModelInterface $model, string $rule): ValidatorErrorBag
+    public function validate(ModelInterface $model, string $rule, ?int $index = null): ValidatorErrorBag
     {
         $reflection = new ReflectionClass($model);
         $properties = $reflection->getProperties();
@@ -58,8 +70,9 @@ class BaseValidator
                     $a = $attribute->newInstance();
 
                     if (!$a->validate($value)) {
-                        $errors->addError($property->getName(), 'Property ' . $property->getName() . ' is required');
+                        $errors->addError($property->getName(), 'Property ' . $property->getName() . ' is required', index: $index);
 
+                        // fail on first error
                         if ($this->failFast) {
                             if ($this->throwException) {
                                 $errors->throwIfNotEmpty();
@@ -73,7 +86,8 @@ class BaseValidator
             }
         }
 
-        if ($this->throwException) {
+        // throw exception if there are any errors unless you going over an array of models
+        if ($this->throwException && is_null($index)) {
             $errors->throwIfNotEmpty();
         }
 

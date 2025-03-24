@@ -8,9 +8,13 @@ class ValidatorErrorBag
 {
     protected array $errors = [];
 
-    public function addError(string $field, string $message)
+    public function addError(string $field, string $message, ?int $index = null)
     {
-        $this->errors[$field][] = $message;
+        if ($index !== null) {
+            $this->errors[$index][$field][] = $message;
+        } else {
+            $this->errors[$field][] = $message;
+        }
     }
 
     public function getErrors(?string $field = null): array

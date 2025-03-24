@@ -45,13 +45,14 @@ class FileImportTest extends TestCase
         /** @var array<TestingModel> $modelArray */
         $modelArray = $writer->write(TestingModel::class, $spreadsheet);
 
-        $baseValidator = new BaseValidator(failFast: true, throwException: true);
+        $baseValidator = new BaseValidator(failFast: false, throwException: true);
 
         #$baseValidator->validateMany($modelArray, rule: NotEmpty::class);
 
         try {
             $baseValidator->validateMany($modelArray, rule: NotEmpty::class);
         } catch (ValidationException $e) {
+            var_dump($e->getErrors());
             $this->assertEquals('Property colA is required', $e->getErrors()->getFirstError());
         }
     }
