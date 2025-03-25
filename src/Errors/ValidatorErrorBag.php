@@ -8,7 +8,7 @@ class ValidatorErrorBag
 {
     protected array $errors = [];
 
-    public function addError(string $field, string $message, ?int $index = null)
+    public function addError(string $field, string $message, ?int $index = null): void
     {
         if ($index !== null) {
             $this->errors[$index][$field][] = $message;
@@ -24,10 +24,8 @@ class ValidatorErrorBag
 
     public function getFirstError(?string $field = null, ?int $index = null): ?string
     {
-
         // For provided Index and field
         if ($index !== null) {
-
             // Index is not exists return null
             if (!isset($this->errors[$index])) {
                 return null;
@@ -53,7 +51,8 @@ class ValidatorErrorBag
 
             if (!isset($this->errors[$field])) {
                 // field error not found, try to find in indexed array
-                // This is case when you testing multiple models (array of models) and trying to find error for specific field
+                // This is case when you testing multiple models (array of models)
+                // and trying to find error for specific field
                 // try iterate ofver array and check if filed exists in member arrays
                 foreach ($this->errors as $fieldErrors) {
                     if (isset($fieldErrors[$field])) {
@@ -89,7 +88,7 @@ class ValidatorErrorBag
         return !empty($this->errors);
     }
 
-    public function throwIfNotEmpty()
+    public function throwIfNotEmpty(): void
     {
         if ($this->hasErrors()) {
             throw new ValidationException($this);

@@ -16,11 +16,19 @@ class BaseValidator
         //
     }
 
+    protected function initialize(): ValidatorErrorBag
+    {
+        if ($this->errors == null) {
+            $this->errors = new ValidatorErrorBag();
+        }
+
+        return $this->errors;
+    }
+
     /**
      * Validate array of models
      * @param array<ModelInterface> $model
      * @param string $rule
-     * @return void
      */
     public function validateMany(array $model, string $rule): ValidatorErrorBag
     {
@@ -40,16 +48,7 @@ class BaseValidator
             $errors->throwIfNotEmpty();
         }
 
-        return $this->errors;
-    }
-
-    protected function initialize(): ValidatorErrorBag
-    {
-        if ($this->errors == null) {
-            $this->errors = new ValidatorErrorBag();
-        }
-
-        return $this->errors;
+        return $errors;
     }
 
     public function validate(ModelInterface $model, string $rule, ?int $index = null): ValidatorErrorBag
@@ -70,7 +69,11 @@ class BaseValidator
                     $a = $attribute->newInstance();
 
                     if (!$a->validate($value)) {
-                        $errors->addError($property->getName(), 'Property ' . $property->getName() . ' is required', index: $index);
+                        $errors->addError(
+                            $property->getName(),
+                            'Property ' . $property->getName() . ' is required',
+                            index: $index
+                        );
 
                         // fail on first error
                         if ($this->failFast) {
@@ -81,7 +84,6 @@ class BaseValidator
                             return $errors;
                         }
                     }
-
                 }
             }
         }
