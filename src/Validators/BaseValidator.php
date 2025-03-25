@@ -2,28 +2,60 @@
 
 namespace MayMeow\ExcelImporter\Validators;
 
+use MayMeow\ExcelImporter\Errors\ValidatorErrorBag;
 use MayMeow\ExcelImporter\Models\ModelInterface;
+use PHPUnit\Util\Xml\Validator;
 use ReflectionClass;
 
 class BaseValidator
 {
+    protected ?ValidatorErrorBag $errors = null;
+
+    public function __construct(protected bool $failFast = false, protected bool $throwException = false)
+    {
+        //
+    }
+
+    protected function initialize(): ValidatorErrorBag
+    {
+        if ($this->errors == null) {
+            $this->errors = new ValidatorErrorBag();
+        }
+
+        return $this->errors;
+    }
+
     /**
      * Validate array of models
      * @param array<ModelInterface> $model
      * @param string $rule
-     * @return void
      */
-    public function validateMany(array $model, string $rule): void
+    public function validateMany(array $model, string $rule): ValidatorErrorBag
     {
-        foreach ($model as $m) {
-            $this->validate($m, $rule);
+        $errors = $this->initialize();
+
+        foreach ($model as $index => $m) {
+            if (!is_object($m)) {
+                $errors->addError('general', "Invalid model at index $index");
+                continue;
+            }
+
+            $this->validate($m, $rule, $index);
         }
+
+        // htrow exception if there are any errors
+        if ($this->throwException) {
+            $errors->throwIfNotEmpty();
+        }
+
+        return $errors;
     }
 
-    public function validate(ModelInterface $model, string $rule): void
+    public function validate(ModelInterface $model, string $rule, ?int $index = null): ValidatorErrorBag
     {
         $reflection = new ReflectionClass($model);
         $properties = $reflection->getProperties();
+        $errors = $this->initialize();
 
         foreach ($properties as $property) {
             $attributes = $property->getAttributes();
@@ -37,10 +69,30 @@ class BaseValidator
                     $a = $attribute->newInstance();
 
                     if (!$a->validate($value)) {
-                        throw new \Exception('Property ' . $property->getName() . ' is required');
+                        $errors->addError(
+                            $property->getName(),
+                            'Property ' . $property->getName() . ' is required',
+                            index: $index
+                        );
+
+                        // fail on first error
+                        if ($this->failFast) {
+                            if ($this->throwException) {
+                                $errors->throwIfNotEmpty();
+                            }
+
+                            return $errors;
+                        }
                     }
                 }
             }
         }
+
+        // throw exception if there are any errors unless you going over an array of models
+        if ($this->throwException && is_null($index)) {
+            $errors->throwIfNotEmpty();
+        }
+
+        return $errors;
     }
 }
