@@ -4,7 +4,6 @@ namespace MayMeow\ExcelImporter\Validators;
 
 use MayMeow\ExcelImporter\Errors\ValidatorErrorBag;
 use MayMeow\ExcelImporter\Models\ModelInterface;
-use PHPUnit\Util\Xml\Validator;
 use ReflectionClass;
 
 class BaseValidator
@@ -30,7 +29,7 @@ class BaseValidator
      * @param array<ModelInterface> $model
      * @param string $rule
      */
-    public function validateMany(array $model, string $rule): ValidatorErrorBag
+    public function validateMany(array $model, ?string $rule = null): ValidatorErrorBag
     {
         $errors = $this->initialize();
 
@@ -51,7 +50,7 @@ class BaseValidator
         return $errors;
     }
 
-    public function validate(ModelInterface $model, string $rule, ?int $index = null): ValidatorErrorBag
+    public function validate(ModelInterface $model, ?string $rule = null, ?int $index = null): ValidatorErrorBag
     {
         $reflection = new ReflectionClass($model);
         $properties = $reflection->getProperties();
@@ -61,30 +60,38 @@ class BaseValidator
             $attributes = $property->getAttributes();
 
             foreach ($attributes as $attribute) {
-                if ($attribute->getName() == $rule) { // if there is attribute agains which we want to validate
-                    $property->setAccessible(true);
-                    $value = $property->getValue($model);
+                // if rule is defined skip all other rules
+                if ($attribute->getName() !== $rule && $rule !== null) {
+                    continue;
+                }
 
-                    /** @var ValidatorAttributeInterface $a */
-                    $a = $attribute->newInstance();
+                // skip also all attributes that not implements ValidatorAttributeInterface
+                if (!is_subclass_of($attribute->getName(), ValidatorAttributeInterface::class)) {
+                    continue;
+                }
 
-                    if (!$a->validate($value)) {
-                        $errors->addError(
-                            $property->getName(),
-                            'Property ' . $property->getName() . ' is required',
-                            index: $index
-                        );
+                // if there is attribute agains which we want to validate
+                $property->setAccessible(true);
+                $value = $property->getValue($model);
+                $a = $attribute->newInstance();
 
-                        // fail on first error
-                        if ($this->failFast) {
-                            if ($this->throwException) {
-                                $errors->throwIfNotEmpty();
-                            }
+                if (!$a->validate($value)) {
+                    $errors->addError(
+                        $property->getName(),
+                        'Property ' . $property->getName() . ' is required',
+                        index: $index
+                    );
 
-                            return $errors;
+                    // fail on first error
+                    if ($this->failFast) {
+                        if ($this->throwException) {
+                            $errors->throwIfNotEmpty();
                         }
+
+                        return $errors;
                     }
                 }
+                
             }
         }
 
