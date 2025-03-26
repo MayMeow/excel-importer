@@ -79,7 +79,8 @@ class BaseValidator
                     $errors->addError(
                         $property->getName(),
                         'Property ' . $property->getName() . ' is required',
-                        index: $index
+                        index: $index,
+                        rule: $attribute->getName()
                     );
 
                     // fail on first error

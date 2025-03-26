@@ -108,6 +108,16 @@ class FileImportTest extends TestCase
             $this->assertEquals('Property colA is required', $e->getFirstError()); // first error for any field
             $this->assertEquals('Property colA is required', $e->getFirstError(field: 'colA')); // first error for field colA
             $this->assertEquals(null, $e->getFirstError(field: 'colB')); // field colB -> there should be no error
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(field: 'colA', fullDetails: true));
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(fullDetails: true));
         }
     }
 
@@ -123,6 +133,8 @@ class FileImportTest extends TestCase
             $this->assertEquals('Property colA is required', $e->getFirstError()); // first error for any field
             $this->assertEquals('Property colA is required', $e->getFirstError(field: 'colA')); // first error for field colA
             $this->assertEquals(null, $e->getFirstError(field: 'colB')); // field colB -> there should be no error
+
+            $this->assertEquals(null, $e->getFirstError(field: 'colB', fullDetails: true));
         }
     }
 
@@ -132,7 +144,7 @@ class FileImportTest extends TestCase
         $baseValidator = new BaseValidator(failFast: true, throwException: false);
 
         /** @var ValidatorErrorBag $e */
-        $e = $baseValidator->validateMany($this->modelArray, rule: NotEmpty::class);
+        $e = $baseValidator->validateMany($this->modelArray);
 
         if ($e->hasErrors()) {
             $this->assertEquals('Property colA is required', $e->getFirstError()); // return any first error
@@ -140,6 +152,26 @@ class FileImportTest extends TestCase
             $this->assertEquals('Property colA is required', $e->getFirstError(field: 'colA')); // return first error for field colA in any index
             $this->assertEquals('Property colA is required', $e->getFirstError(field: 'colA', index: 2)); // return first error for field colA on index 2
             $this->assertEquals(null, $e->getFirstError(index: 1)); // row 1 should be valid
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(index: 2, field: 'colA', fullDetails: true));
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(fullDetails: true));
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(field: 'colA', fullDetails: true));
+
+            $this->assertEquals([
+                'message' => 'Property colA is required',
+                'rule' => 'MayMeow\ExcelImporter\Attributes\NotEmpty'
+            ], $e->getFirstError(index: 2, fullDetails: true));
         }
     }
 
