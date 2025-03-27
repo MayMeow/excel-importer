@@ -73,6 +73,8 @@ class BaseValidator
                 // if there is attribute agains which we want to validate
                 $property->setAccessible(true);
                 $value = $property->getValue($model);
+
+                /** @var ValidatorAttributeInterface $a */
                 $a = $attribute->newInstance();
 
                 if (!$a->validate($value)) {
@@ -92,7 +94,6 @@ class BaseValidator
                         return $errors;
                     }
                 }
-                
             }
         }
 

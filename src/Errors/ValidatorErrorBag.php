@@ -26,12 +26,11 @@ class ValidatorErrorBag
     public function getErrors(?string $field = null): array
     {
         // indexed array
-        if (!array_key_exists($field, $this->errors)
+        if (!($field !== null && array_key_exists($field, $this->errors))
             && array_keys($this->errors) === range(
                 min(array_keys($this->errors)),
                 max(array_keys($this->errors))
-            ))
-        {
+            )) {
             $filteredErrors = $this->errors;
             foreach ($this->errors as $index => $fieldErrors) {
                 foreach ($fieldErrors as $key => $_) {
@@ -47,8 +46,11 @@ class ValidatorErrorBag
         return $field ? ($this->errors[$field] ?? []) : $this->errors;
     }
 
-    public function getFirstError(?string $field = null, ?int $index = null, bool $fullDetails = false): string|array|null
-    {
+    public function getFirstError(
+        ?string $field = null,
+        ?int $index = null,
+        bool $fullDetails = false
+    ): string|array|null {
         // For provided Index and field
         if ($index !== null) {
             // Index is not exists return null
