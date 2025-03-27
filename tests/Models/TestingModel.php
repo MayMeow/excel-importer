@@ -14,6 +14,7 @@ class TestingModel extends BaseModel
     protected string $colA;
 
     #[Column('B')]
+    #[NotEmpty] // allow empty message
     protected string $colB;
 
     #[Column('C')]
