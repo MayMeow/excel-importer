@@ -1,5 +1,7 @@
 # Excel importer
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D5DMOTA)
+
 Simple and extendable library for loading data from Excel files (.xlsx) into objects.
 
 This Library using `phpoffice/phpspreadsheet` to read from XLSX files. Look at their [Github](https://github.com/PHPOffice/PhpSpreadsheet)
