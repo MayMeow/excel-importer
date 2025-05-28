@@ -9,10 +9,6 @@ class NotEmpty extends BaseValidatorAttribute implements ValidatorAttributeInter
 {
     public function validate(mixed $value): bool
     {
-        if (empty($value) || $value == '') {
-            return false;
-        }
-
-        return true;
+        return $value !== null && $value !== '';
     }
 }
