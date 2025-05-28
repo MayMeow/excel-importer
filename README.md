@@ -60,16 +60,60 @@ public function testImportingFile()
 
 ## Validators :tada: (from v1.2.0)
 
-I added option to validate input data before you store them to the target. It uses new class from `namespace MayMeow\ExcelImporter\Validators;`. Validator using attributes (rules) to validate fi data in field (property are valid). In current state (v1.2.0) i shipping only `NotEmpty` rule for validation.
+I added option to validate input data before you store them to the target. It uses new class from `namespace MayMeow\ExcelImporter\Validators;`. Validator using attributes (rules) to validate if data in field (property are valid).
 
-For example
+### Available Validation Attributes
+
+#### Basic Constraints
+```php
+#[Required]   // Field must be present (but can be empty)
+#[NotEmpty]   // Field must be present and not empty
+```
+
+#### String Constraints
+```php
+#[MaxLength(50)]  // Limits string length to 50 characters
+#[MinLength(5)]   // Ensures at least 5 characters
+```
+
+#### Numerical Constraints
+```php
+#[Min(1)]     // Minimum allowed value
+#[Max(100)]   // Maximum allowed value
+#[Between(1, 10)] // Ensures value is between 1 and 10
+```
+
+#### Format Constraints
+```php
+#[Email]      // Validates email format
+#[Url]        // Validates URL format
+#[Regex("/^[a-zA-Z0-9]+$/")]  // Custom regex validation
+```
+
+#### Collection Constraints
+```php
+#[Each(new Min(1))]  // Applies Min(1) to each array element
+#[Each(new Email)]   // Ensures every item in an array is an email
+```
+
+#### Example
 
 ```php
 class TestingModel extends BaseModel
 {
     #[Column('A')]
     #[NotEmpty]
-    protected string $colA;
+    #[MaxLength(50)]
+    protected string $name;
+    
+    #[Column('B')]
+    #[Email]
+    protected string $email;
+    
+    #[Column('C')]
+    #[Min(18)]
+    #[Max(100)]
+    protected int $age;
 
 // ...
 }
