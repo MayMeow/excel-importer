@@ -190,4 +190,4 @@ Validator only look for property applied Attributes.
 For getting path to files you can create Locator by implementing `MayMeow\ExcelImporter\Tools\FileLocatorInterface` which
 is not required by XLS reader but recommended.
 
-__License MIT__
+__License AGPL v3.0__
