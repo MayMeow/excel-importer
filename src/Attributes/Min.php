@@ -6,10 +6,10 @@ use MayMeow\ExcelImporter\Validators\ValidatorAttributeInterface;
 
 /**
  * Validates that a numeric value is greater than or equal to a specified minimum.
- * 
+ *
  * This validator checks if a numeric value (integer or float) is greater than or equal
  * to the specified minimum value. It returns false for non-numeric values.
- * 
+ *
  * @attribute
  * @property int|float $min The minimum allowed value (inclusive)
  */
@@ -18,7 +18,7 @@ class Min extends BaseValidatorAttribute implements ValidatorAttributeInterface
 {
     /**
      * Constructor for the Min validator.
-     * 
+     *
      * @param int|float $min The minimum allowed value (inclusive)
      * @param string|null $message Custom error message to use when validation fails
      */
@@ -29,7 +29,7 @@ class Min extends BaseValidatorAttribute implements ValidatorAttributeInterface
 
     /**
      * Validates if the value is greater than or equal to the minimum.
-     * 
+     *
      * @param mixed $value The value to validate
      * @return bool True if value is numeric and >= minimum, false otherwise
      */

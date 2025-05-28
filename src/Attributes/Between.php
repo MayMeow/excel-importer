@@ -6,10 +6,10 @@ use MayMeow\ExcelImporter\Validators\ValidatorAttributeInterface;
 
 /**
  * Validates that a numeric value is between the specified minimum and maximum values (inclusive).
- * 
+ *
  * This validator checks if a numeric value (integer or float) falls within a specified range.
  * It returns false for non-numeric values.
- * 
+ *
  * @attribute
  * @property int|float $min The minimum allowed value (inclusive)
  * @property int|float $max The maximum allowed value (inclusive)
@@ -19,14 +19,14 @@ class Between extends BaseValidatorAttribute implements ValidatorAttributeInterf
 {
     /**
      * Constructor for the Between validator.
-     * 
+     *
      * @param int|float $min The minimum allowed value (inclusive)
      * @param int|float $max The maximum allowed value (inclusive)
      * @param string|null $message Custom error message to use when validation fails
      */
     public function __construct(
-        protected int|float $min, 
-        protected int|float $max, 
+        protected int|float $min,
+        protected int|float $max,
         ?string $message = null
     ) {
         parent::__construct($message);
@@ -34,7 +34,7 @@ class Between extends BaseValidatorAttribute implements ValidatorAttributeInterf
 
     /**
      * Validates if the value is between the specified minimum and maximum (inclusive).
-     * 
+     *
      * @param mixed $value The value to validate
      * @return bool True if value is numeric and falls within the specified range, false otherwise
      */

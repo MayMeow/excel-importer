@@ -6,10 +6,10 @@ use MayMeow\ExcelImporter\Validators\ValidatorAttributeInterface;
 
 /**
  * Validates that a string matches a specified regular expression pattern.
- * 
+ *
  * This validator uses preg_match to check if a string matches the provided
  * regular expression pattern. It returns false for non-string values.
- * 
+ *
  * @attribute
  * @property string $pattern The regular expression pattern to match against
  */
@@ -18,7 +18,7 @@ class Regex extends BaseValidatorAttribute implements ValidatorAttributeInterfac
 {
     /**
      * Constructor for the Regex validator.
-     * 
+     *
      * @param string $pattern The regular expression pattern to match against
      * @param string|null $message Custom error message to use when validation fails
      */
@@ -29,7 +29,7 @@ class Regex extends BaseValidatorAttribute implements ValidatorAttributeInterfac
 
     /**
      * Validates if the value matches the regular expression pattern.
-     * 
+     *
      * @param mixed $value The value to validate
      * @return bool True if value is a string and matches the pattern, false otherwise
      */
