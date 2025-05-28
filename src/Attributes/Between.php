@@ -17,7 +17,7 @@ class Between extends BaseValidatorAttribute implements ValidatorAttributeInterf
 
     public function validate(mixed $value): bool
     {
-        if (!is_numeric($value)) {
+        if (!is_int($value) && !is_float($value)) {
             return false;
         }
 
